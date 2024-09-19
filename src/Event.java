@@ -25,6 +25,7 @@ public abstract class Event implements Comparable <Event> {
         this.dateTime = dateTime;
     }
 
+    @Override
     public int compareTo(Event e) {
 
         if (this.dateTime.isBefore(e.dateTime)) {

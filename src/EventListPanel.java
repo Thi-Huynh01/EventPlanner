@@ -19,9 +19,13 @@ public class EventListPanel extends JPanel {
     final int height = 600;
     public JTextField textField;
     final String[] sortOptions = {"Select Filter", "Name", "Date"};
+    public AddEventModal addEventModal;
+
 
     public EventListPanel() {
         textField = new JTextField();
+        addEventModal = new AddEventModal();
+
         setPreferredSize(new Dimension(800, 800));
         setBackground(Color.pink);
         events = new ArrayList<>();
@@ -39,12 +43,20 @@ public class EventListPanel extends JPanel {
         addEventButton = new JButton("Add Event");
         addEventButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         addEventButton.addActionListener(e -> {
+            addEventModal.show();
+            String eventName = addEventModal.getEventName(); // Get the event name
+            int eventType = addEventModal.getEventType();
+            System.out.println(eventType);
 
-            addEvent(new Meeting("DEF",LocalDateTime.now(), LocalDateTime.now(), "Conway"));
-            addEvent(new Meeting("ABC",LocalDateTime.now(), LocalDateTime.now(), "Batesville"));
+            if (eventType == 0) {
+                addEvent(new Meeting(eventName,LocalDateTime.now(), LocalDateTime.now(), "Conway"));
+            }
+            else if (eventType >= 1) {
+                addEvent(new Deadline(eventName,LocalDateTime.now()));
+            }
+            //addEvent(new Meeting("ABC",LocalDateTime.now(), LocalDateTime.now(), "Batesville"));
 
         });
-
         controlPanel.add(addEventButton);
         filterDisplay = new JCheckBox();
 
@@ -60,7 +72,6 @@ public class EventListPanel extends JPanel {
             updateDisplay();
         });
         controlPanel.add(sortDropDown);
-
 
         controlPanel.add(filterDisplay);
     }

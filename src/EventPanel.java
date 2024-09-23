@@ -14,7 +14,6 @@ public class EventPanel extends JPanel {
         this.event = event;
 
         //eventListPanel = new EventListPanel();
-        //System.out.println("From Event Panel: " + addEventModal.eventMap());
 
         JLabel nameLabel = new JLabel(event.getName());
         nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));

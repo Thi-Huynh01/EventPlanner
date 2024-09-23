@@ -29,7 +29,7 @@ public class AddEventModal extends JDialog {
                 JOptionPane.INFORMATION_MESSAGE,
                 null,
                 types,
-                1);
+                0);
 
     }
 

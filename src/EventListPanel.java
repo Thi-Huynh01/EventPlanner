@@ -20,20 +20,19 @@ public class EventListPanel extends JPanel {
     public JTextField textField;
     final String[] sortOptions = {"Select Filter", "Name", "Date"};
     public AddEventModal addEventModal;
+    public Event event;
+
 
 
     public EventListPanel() {
         textField = new JTextField();
         addEventModal = new AddEventModal();
-
         setPreferredSize(new Dimension(800, 800));
         setBackground(Color.pink);
         events = new ArrayList<>();
-
         displayPanel = new JPanel();
         //displayPanel.setBackground(Color.gray);
         displayPanel.setPreferredSize(new Dimension(700, 400));
-
         controlPanel = new JPanel();
         controlPanel.setPreferredSize(new Dimension(700, 200));
 
@@ -43,18 +42,20 @@ public class EventListPanel extends JPanel {
         addEventButton = new JButton("Add Event");
         addEventButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         addEventButton.addActionListener(e -> {
+
             addEventModal.show();
-            String eventName = addEventModal.getEventName(); // Get the event name
             int eventType = addEventModal.getEventType();
-            System.out.println(eventType);
+            String eventName = addEventModal.eventMap() + ": " + addEventModal.getEventName();
 
             if (eventType == 0) {
                 addEvent(new Meeting(eventName,LocalDateTime.now(), LocalDateTime.now(), "Conway"));
             }
-            else if (eventType >= 1) {
+            else if (eventType == 1 || eventType == 2) {
                 addEvent(new Deadline(eventName,LocalDateTime.now()));
             }
-            //addEvent(new Meeting("ABC",LocalDateTime.now(), LocalDateTime.now(), "Batesville"));
+            else{
+                System.out.println("INVALID VALUE ENTERED");
+            }
 
         });
         controlPanel.add(addEventButton);
@@ -83,12 +84,16 @@ public class EventListPanel extends JPanel {
 
     public void updateDisplay() {
         displayPanel.removeAll();
-
+        String name = this.addEventModal.eventMap();
         for (Event event : events) {
             displayPanel.add(new EventPanel(event));
         }
 
         revalidate();
         repaint();
+    }
+
+    public String test () {
+        return this.addEventModal.eventMap();
     }
 }

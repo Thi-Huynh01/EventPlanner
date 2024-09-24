@@ -41,10 +41,11 @@ public class EventListPanel extends JPanel {
 
             addEventModal.show();
             int eventType = addEventModal.getEventType();
-            String eventName = addEventModal.eventMap() + ": " + addEventModal.getEventName() + "     Date: " + addEventModal.getStartTime();
-
+            String eventName = addEventModal.eventMap() + ": " + addEventModal.getEventName() + "   Date: " + addEventModal.getStartTime();
+            String location = addEventModal.returnLocation();
             if (eventType == 0) {
-                addEvent(new Meeting(eventName,LocalDateTime.now(), LocalDateTime.now(), "Conway"));
+                eventName += "   End time: " + addEventModal.getEndTime() + "   Location: " + location;
+                addEvent(new Meeting(eventName,addEventModal.getStartTime(), addEventModal.getEndTime(), location));
             }
             else if (eventType == 1 || eventType == 2) {
                 addEvent(new Deadline(eventName,addEventModal.getStartTime()));

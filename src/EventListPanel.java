@@ -41,7 +41,7 @@ public class EventListPanel extends JPanel {
 
             addEventModal.show();
             int eventType = addEventModal.getEventType();
-            String eventName = addEventModal.eventMap() + ": " + addEventModal.getEventName() + "   Date: " + addEventModal.getStartTime();
+            String eventName =  addEventModal.getEventName()+ ": " + addEventModal.eventMap() + "   Date: " + addEventModal.getStartTime();
             String location = addEventModal.returnLocation();
             if (eventType == 0) {
                 eventName += "   End time: " + addEventModal.getEndTime() + "   Location: " + location;
@@ -57,17 +57,21 @@ public class EventListPanel extends JPanel {
         sortDropDown = new JComboBox(sortOptions);
         sortDropDown.setFont(new Font("Ubuntu", Font.BOLD, 12));
         sortDropDown.addActionListener(e -> {
+
+            updateDisplay();
             if (sortDropDown.getSelectedItem().equals(sortOptions[1])) {
-                Collections.sort(events);
+                events.sort((e1,e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
             }
             if (sortDropDown.getSelectedItem().equals("Date")) {
-
+                Collections.sort(events);
             }
             updateDisplay();
+
         });
+
         controlPanel.add(sortDropDown);
 
-        controlPanel.add(filterDisplay);
+        //controlPanel.add(filterDisplay);
     }
 
     public void addEvent(Event event) {
@@ -77,6 +81,7 @@ public class EventListPanel extends JPanel {
 
     public void updateDisplay() {
         displayPanel.removeAll();
+
         for (Event event : events) {
             displayPanel.add(new EventPanel(event));
         }

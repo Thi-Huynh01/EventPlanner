@@ -1,7 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
+import java.util.function.Predicate;
 
 
 public class EventListPanel extends JPanel {
@@ -14,8 +18,10 @@ public class EventListPanel extends JPanel {
     private final int width = 800;
     private final int height = 600;
     public JTextField textField;
-    final String[] sortOptions = {"Select Filter", "Name (A-Z)", "Name (Z-A)","Date"};
+    final String[] sortOptions = {"Select Display Order", "Name (A-Z)", "Name (Z-A)","Date"};
+    final String[] filters = {"Meeting", "Deadline", "Remove Completed" };
     public AddEventModal addEventModal;
+    ArrayList<JCheckBox> FILTERS;
 
     public EventListPanel() {
         textField = new JTextField();
@@ -28,8 +34,6 @@ public class EventListPanel extends JPanel {
         controlPanel = new JPanel();
         controlPanel.setPreferredSize(new Dimension(700, 200));
 
-        add(controlPanel);
-        add(displayPanel);
 
         addEventButton = new JButton("Add Event");
         addEventButton.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -37,7 +41,7 @@ public class EventListPanel extends JPanel {
 
             addEventModal.show();
             int eventType = addEventModal.getEventType();
-            String eventName =  addEventModal.getEventName()+ ": " + addEventModal.eventMap() + "   Date: " + addEventModal.getStartTime();
+            String eventName = addEventModal.eventMap() + " : " + addEventModal.getEventName() + "   Date: " + addEventModal.getStartTime();
             String location = addEventModal.returnLocation();
 
             if (eventType == 0) {
@@ -69,8 +73,36 @@ public class EventListPanel extends JPanel {
         });
 
         controlPanel.add(sortDropDown);
+        FILTERS = new ArrayList<>();
+        for (String filter : filters) {
+            JCheckBox checkBox = new JCheckBox(filter);
+            checkBox.setFont(new Font("Ubuntu", Font.BOLD, 12));
+            checkBox.addItemListener(new ItemListener() {
 
-        //controlPanel.add(filterDisplay);
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    updateDisplay();
+                }
+            });
+            FILTERS.add(checkBox);
+        }
+
+        for (JCheckBox checkBox : FILTERS)
+            controlPanel.add(checkBox);
+
+        add(controlPanel);
+        add(displayPanel);
+    }
+
+    public boolean isFiltered (Event event) {
+
+        for (JCheckBox checkBox : FILTERS) {
+            if (checkBox.isSelected()) {
+                if (event.getName().startsWith(checkBox.getText()))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public void addEvent(Event event) {
@@ -82,7 +114,8 @@ public class EventListPanel extends JPanel {
         displayPanel.removeAll();
 
         for (Event event : events) {
-            displayPanel.add(new EventPanel(event));
+            if (!isFiltered (event))
+                displayPanel.add(new EventPanel(event));
         }
 
         revalidate();

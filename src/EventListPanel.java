@@ -2,11 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
-import java.util.function.Predicate;
-
 
 public class EventListPanel extends JPanel {
     public ArrayList<Event> events;
@@ -21,19 +19,25 @@ public class EventListPanel extends JPanel {
     final String[] sortOptions = {"Select Display Order", "Name (A-Z)", "Name (Z-A)","Date"};
     final String[] filters = {"Meeting", "Deadline", "Remove Completed" };
     public AddEventModal addEventModal;
-    ArrayList<JCheckBox> FILTERS;
+    public ArrayList<JCheckBox> FILTERS;
 
     public EventListPanel() {
+
+        Deadline deadL = new Deadline("Deadline : Lab 2   Date: 2024-9-25T12:00", LocalDateTime.of(2024, 9, 25, 15, 0));
+        Meeting meet = new Meeting("Meeting : OOP w/Java  Date 2024-9-20T15:00   End time: 2024-9-20T15:50   Location: MCS 339", LocalDateTime.of(2024, 9, 20, 15,0), LocalDateTime.of(2024,9,20, 15, 50,0), "Room 339");
+
         textField = new JTextField();
         addEventModal = new AddEventModal();
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.pink);
+
         events = new ArrayList<>();
         displayPanel = new JPanel();
         displayPanel.setPreferredSize(new Dimension(700, (int) (height * .8)));
+
+
         controlPanel = new JPanel();
         controlPanel.setPreferredSize(new Dimension(700, 200));
-
 
         addEventButton = new JButton("Add Event");
         addEventButton.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -67,6 +71,7 @@ public class EventListPanel extends JPanel {
             }
             if (sortDropDown.getSelectedItem().equals(sortOptions[3])) {
                 Collections.sort(events);
+                Collections.reverse(events);
             }
             updateDisplay();
 
@@ -89,6 +94,9 @@ public class EventListPanel extends JPanel {
 
         for (JCheckBox checkBox : FILTERS)
             controlPanel.add(checkBox);
+
+        addEvent(deadL);
+        addEvent(meet);
 
         add(controlPanel);
         add(displayPanel);

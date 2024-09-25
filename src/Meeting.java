@@ -7,12 +7,15 @@ public class Meeting extends Event implements Completable {
    public String location;
    public boolean complete;
 
+   // Constructor to inherit all values from event
+
    public Meeting (String name, LocalDateTime start, LocalDateTime end, String location) {
        super(name, start);
        this.endDateTime = end;
        this.location = location;
    }
 
+   // Setters and getters
    public LocalDateTime getEndDateTime(){
        return endDateTime;
    }
@@ -32,6 +35,8 @@ public class Meeting extends Event implements Completable {
    public Duration getDuration() {
         return (Duration.between(dateTime, endDateTime));
    }
+
+   // Overrides methods from Completable interface
    @Override
    public void complete () {
         this.complete = true;

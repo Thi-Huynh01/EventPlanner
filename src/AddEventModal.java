@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 public class AddEventModal extends JDialog {
     private String eventName;
     private int eventType;
-    private final String [] types = {"Meeting", "Deadline", "Other"};
+    private final String [] types = {"Meeting", "Deadline", "Other"}; // Options for dialog box. 'Other labels the event 'Event' but shares the properties of Deadline
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String location;
@@ -12,11 +12,13 @@ public class AddEventModal extends JDialog {
     @Override
     public void show() {
 
+        // Show dialog box.
         eventName = JOptionPane.showInputDialog(null,
                 "Event Name",
                 "Add Event",
                 JOptionPane.PLAIN_MESSAGE);
 
+        //Prompts the user to enter the name of the event: Deadline or Meeting
         eventType = JOptionPane.showOptionDialog(null,
                 "What type of Event is this?",
                 "Event Type",
@@ -26,6 +28,7 @@ public class AddEventModal extends JDialog {
                 types,
                 0);
 
+        // eventType will yield a 0, 1, or 2. This will be passed into getTime()
             getTime(eventType);
 
 
@@ -34,6 +37,7 @@ public class AddEventModal extends JDialog {
     public void getTime (int eventType) {
         String month, day, year, time, time_string, location;
 
+        // Get numerical data of month, day, year, and time.
         month = JOptionPane.showInputDialog(null,
                 "Enter the Date\n Month (MM):",
                 "Date",
@@ -54,11 +58,13 @@ public class AddEventModal extends JDialog {
                 "Date",
                 JOptionPane.PLAIN_MESSAGE);
 
+        // Concatenate the date into a string to pass to a parser
         time_string = year + "-" + month + "-" + day + "T" + time;
-        System.out.println(time_string);
 
+        // addEventModal's start time will be parsed.
         startTime = LocalDateTime.parse(time_string);
 
+        // If the eventType is a meeting, get the endTime and parse that into the endTime variable
         if (eventType == 0) {
 
             time = JOptionPane.showInputDialog(null,
@@ -69,6 +75,8 @@ public class AddEventModal extends JDialog {
             time_string = year + "-" + month + "-" + day + "T" + time;
             endTime = LocalDateTime.parse(time_string);
 
+            // Get location of meeting
+
             location = JOptionPane.showInputDialog(null,
                     "Enter the location of this meeting:",
                     "Location",
@@ -78,6 +86,19 @@ public class AddEventModal extends JDialog {
         }
 
     }
+
+    // If return the type of event based on the value yielded from eventType
+    public String eventMap() {
+        if (this.getEventType() == 0){
+            return "Meeting";
+        }
+        else if (this.getEventType() == 1) {
+            return "Deadline";
+        }
+        return "Event";
+    }
+
+    // Getters
 
     public String returnLocation () {
         return this.location;
@@ -92,17 +113,13 @@ public class AddEventModal extends JDialog {
         return endTime;
     }
 
-    public int getEventType() {return eventType;}
-
-    public String eventMap() {
-        if (this.getEventType() == 0){
-            return "Meeting";
-        }
-        else if (this.getEventType() == 1) {
-            return "Deadline";
-        }
-        return "Event";
+    public int getEventType() {
+        return eventType;
     }
-    public String getEventName() {return eventName;}
+
+
+    public String getEventName() {
+        return eventName;
+    }
 
 }

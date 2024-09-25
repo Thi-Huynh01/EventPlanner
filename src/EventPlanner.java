@@ -9,8 +9,10 @@ public class EventPlanner {
 
     public static void main(String[] args) {
 
+        // Create new EventListPanel, where all the GUI logic is held
         EventListPanel eventList = new EventListPanel();
 
+        // Create JFrame
         JFrame frame = new JFrame();
         frame.setTitle("Event Planner");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

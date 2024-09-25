@@ -1,12 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputMethodListener;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Comparator;
+
 
 public class EventListPanel extends JPanel {
     public ArrayList<Event> events;
@@ -18,7 +14,7 @@ public class EventListPanel extends JPanel {
     private final int width = 800;
     private final int height = 600;
     public JTextField textField;
-    final String[] sortOptions = {"Select Filter", "Name", "Date"};
+    final String[] sortOptions = {"Select Filter", "Name (A-Z)", "Name (Z-A)","Date"};
     public AddEventModal addEventModal;
 
     public EventListPanel() {
@@ -43,6 +39,7 @@ public class EventListPanel extends JPanel {
             int eventType = addEventModal.getEventType();
             String eventName =  addEventModal.getEventName()+ ": " + addEventModal.eventMap() + "   Date: " + addEventModal.getStartTime();
             String location = addEventModal.returnLocation();
+
             if (eventType == 0) {
                 eventName += "   End time: " + addEventModal.getEndTime() + "   Location: " + location;
                 addEvent(new Meeting(eventName,addEventModal.getStartTime(), addEventModal.getEndTime(), location));
@@ -58,11 +55,13 @@ public class EventListPanel extends JPanel {
         sortDropDown.setFont(new Font("Ubuntu", Font.BOLD, 12));
         sortDropDown.addActionListener(e -> {
 
-            updateDisplay();
             if (sortDropDown.getSelectedItem().equals(sortOptions[1])) {
                 events.sort((e1,e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
             }
-            if (sortDropDown.getSelectedItem().equals("Date")) {
+            if (sortDropDown.getSelectedItem().equals(sortOptions[2])) {
+                events.sort((e1,e2) -> e1.getName().compareToIgnoreCase(e2.getName()) * -1);
+            }
+            if (sortDropDown.getSelectedItem().equals(sortOptions[3])) {
                 Collections.sort(events);
             }
             updateDisplay();

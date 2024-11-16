@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 public class AddEventModal extends JDialog {
     private String eventName;
     private int eventType;
-    private final String [] types = {"Meeting", "Deadline", "Other"}; // Options for dialog box. 'Other labels the event 'Event' but shares the properties of Deadline
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String location;
@@ -12,25 +11,16 @@ public class AddEventModal extends JDialog {
     @Override
     public void show() {
 
-        // Show dialog box.
-        eventName = JOptionPane.showInputDialog(null,
-                "Event Name",
-                "Add Event",
-                JOptionPane.PLAIN_MESSAGE);
+        EventFactory eventFactory = new EventFactory();
+
+        // Prompt for name of event
+        eventName = eventFactory.getEventName();
 
         //Prompts the user to enter the name of the event: Deadline or Meeting
-        eventType = JOptionPane.showOptionDialog(null,
-                "What type of Event is this?",
-                "Event Type",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                types,
-                0);
+        eventType = eventFactory.eventType();
 
         // eventType will yield a 0, 1, or 2. This will be passed into getTime()
-            getTime(eventType);
-
+        getTime(eventType);
 
     }
 

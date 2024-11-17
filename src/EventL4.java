@@ -1,11 +1,12 @@
 import java.time.LocalDateTime;
 
-public abstract class Event implements Comparable<Event> {
+public class EventL4 implements EventInterface {
+
     public String name; // Event Name
     public LocalDateTime dateTime; // Date and time of event
 
     //Constructor
-    public Event(String name, LocalDateTime dateTime) {
+    public EventL4(String name, LocalDateTime dateTime) {
         this.name = name;
         this.dateTime = dateTime;
     }
@@ -33,5 +34,4 @@ public abstract class Event implements Comparable<Event> {
     public int compareTo(Event e) {
         return dateTime.compareTo(e.dateTime);
     }
-
 }

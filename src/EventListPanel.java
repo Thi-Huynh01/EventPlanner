@@ -8,6 +8,7 @@ import java.util.Collections;
 
 public class EventListPanel extends JPanel {
     public ArrayList<Event> events;
+    public ArrayList<DeadlineDecorator> deadlines;
     public JPanel controlPanel;
     public JPanel displayPanel;
     public JComboBox sortDropDown;
@@ -36,6 +37,7 @@ public class EventListPanel extends JPanel {
 
         // Make array list of events
         events = new ArrayList<>();
+        deadlines = new ArrayList<>();
 
         // Create Display panel
         displayPanel = new JPanel();
@@ -68,13 +70,13 @@ public class EventListPanel extends JPanel {
                 addEvent(new Meeting(eventName,addEventModal.getStartTime(), addEventModal.getEndTime(), location));
             }
             else if (eventType == 1 || eventType == 2) {
-                addEvent(new Deadline(eventName,addEventModal.getStartTime()));
+                //addEvent(new Deadline(eventName,addEventModal.getStartTime()));
+                addDeadline(new DeadlineDecorator(new EventL4(eventName, addEventModal.getEndTime())));
             }
         });
 
         // Finally, add the addEventButton
         controlPanel.add(addEventButton);
-
 
         // Create drop-down box
         sortDropDown = new JComboBox(sortOptions);
@@ -151,12 +153,21 @@ public class EventListPanel extends JPanel {
         updateDisplay(); // Update the display to show the newly added event
     }
 
+    public void addDeadline(DeadlineDecorator deadline) {
+        deadlines.add(deadline);
+        updateDisplay();
+    }
+
     public void updateDisplay() {
         displayPanel.removeAll();  // Clear display panel
 
         for (Event event : events) { // Print each event to display panel
             if (!isFiltered (event)) // Print as long as there is no filter (checkbox) selected
                 displayPanel.add(new EventPanel(event));
+        }
+
+        for (DeadlineDecorator deadline : deadlines) {
+            displayPanel.add(new DeadlinePanel(deadline));
         }
 
         revalidate();

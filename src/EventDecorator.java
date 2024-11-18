@@ -3,6 +3,8 @@ import java.time.LocalDateTime;
 
 abstract class EventDecorator implements EventInterface {
 
+    // Implement all methods from EventInterface.java
+
     protected EventInterface event;
     public EventDecorator(EventInterface event) {
         this.event = event;
@@ -14,7 +16,7 @@ abstract class EventDecorator implements EventInterface {
 
     @Override
     public int compareTo(Event e) {
-        return 0;
+        return event.compareTo(e);
     }
 
     public LocalDateTime getDateTime() {

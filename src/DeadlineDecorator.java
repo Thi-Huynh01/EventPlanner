@@ -1,6 +1,8 @@
 
 public class DeadlineDecorator extends EventDecorator {
-    public DeadlineDecorator(EventL4 event) {
+
+    // Inherit from EventDecorator
+    public DeadlineDecorator(Event event) {
         super(event);
     }
 }

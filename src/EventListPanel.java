@@ -71,7 +71,8 @@ public class EventListPanel extends JPanel {
             }
             else if (eventType == 1 || eventType == 2) {
                 //addEvent(new Deadline(eventName,addEventModal.getStartTime()));
-                addDeadline(new DeadlineDecorator(new EventL4(eventName, addEventModal.getEndTime())));
+                // Below is for Lab 4: Implemented with Decorator design
+                addDeadline(new DeadlineDecorator(new Event(eventName, addEventModal.getEndTime())));
             }
         });
 
